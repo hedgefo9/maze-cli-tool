@@ -7,7 +7,7 @@ import backend.academy.maze.field.Coordinate;
 import backend.academy.maze.generators.Generator;
 import backend.academy.maze.generators.KruskalGenerator;
 import backend.academy.maze.generators.PrimGenerator;
-import backend.academy.maze.renderers.ConsoleRender;
+import backend.academy.maze.renderers.ConsoleRenderer;
 import backend.academy.maze.solvers.AStarSolver;
 import backend.academy.maze.solvers.DepthFirstSearchSolver;
 import backend.academy.maze.solvers.Solver;
@@ -32,7 +32,7 @@ public class Main {
         Scanner sc = new Scanner(is, charset);
         User user = new User(ps, sc);
 
-        ConsoleRender cr = new ConsoleRender(ps);
+        ConsoleRenderer cr = new ConsoleRenderer(ps);
         Generator[] generators = new Generator[] {new PrimGenerator(), new KruskalGenerator()};
         Solver[] solvers = new Solver[] {new AStarSolver(), new DepthFirstSearchSolver()};
         Generator generator = generators[0];

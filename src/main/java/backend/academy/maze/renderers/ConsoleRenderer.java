@@ -11,15 +11,16 @@ import org.jline.terminal.Size;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.NonBlockingReader;
+import static java.lang.Math.max;
 
 /**
- * Класс ConsoleRender нужен для вывода лабиринта и прочей полезной информации
+ * Класс ConsoleRenderer нужен для вывода лабиринта и прочей полезной информации
  * в консоль. Предоставляет возможность прокрутки лабиринта в окне фиксированного размера,
  * таким образом даже лабиринты огромных размеров могут быть выведены. Функционал протестирован
  * на максимальном размере в 10000x10000, но потенциально всё ограничивается только памятью и
  * здравым смыслом. Всё взаимодействие с пользователем ведётся через консоль.
  */
-public class ConsoleRender implements Renderer {
+public class ConsoleRenderer implements Renderer {
     /** Смещение по оси X (отвечает за прокрутку) */
     private int offsetX = 0;
     /** Смещение по оси Y (отвечает за прокрутку) */
@@ -36,7 +37,7 @@ public class ConsoleRender implements Renderer {
      *
      * @param ps поток для печати
      */
-    public ConsoleRender(PrintStream ps) {
+    public ConsoleRenderer(PrintStream ps) {
         this.ps = ps;
     }
 
@@ -55,13 +56,13 @@ public class ConsoleRender implements Renderer {
         Size terminalSize = terminal.getSize();
         int terminalWidth = terminalSize.getColumns();
         // int terminalHeight = terminalSize.getRows();
-        int startX = (terminalWidth - VIEW_WIDTH) / columnPrintFrequency;
+        int startX = max(0, terminalWidth - VIEW_WIDTH) / columnPrintFrequency;
         // int startY = (terminalHeight - viewHeight) / columnPrintFrequency;
 
         String title = "[Вид лабиринта]";
-        ps.println(" ".repeat((terminalWidth - title.length()) / 2) + title);
+        ps.println(" ".repeat(max(0, (terminalWidth - title.length()) / 2)) + title);
 
-        ps.print(" ".repeat(startX - 2));
+        ps.print(" ".repeat(max(0, startX - 2)));
         ps.print("   ");
         for (int x = 0; x < VIEW_WIDTH; x++) {
             int columnNumber = offsetX + x + 1;
@@ -71,8 +72,8 @@ public class ConsoleRender implements Renderer {
                 int columnWidth = columnLabel.length();
                 ps.print(columnLabel);
 
-                int spacesToNextLabel = columnPrintFrequency * 2 - columnWidth;
-                ps.print(" ".repeat(Math.max(spacesToNextLabel, 0)));
+                int spacesToNextLabel = max(0, columnPrintFrequency * 2 - columnWidth);
+                ps.print(" ".repeat(spacesToNextLabel));
             }
         }
         ps.println();
@@ -80,7 +81,7 @@ public class ConsoleRender implements Renderer {
 
         for (int y = 0; y < VIEW_HEIGHT; y++) {
             int rowNumber = offsetY + y + 1;
-            ps.print(" ".repeat(startX - String.valueOf(rowNumber).length()));
+            ps.print(" ".repeat(max(0, startX - String.valueOf(rowNumber).length())));
 
             if (rowNumber % 2 == 0) {
                 ps.printf("%d|", rowNumber);  // Нумерация строк

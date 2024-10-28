@@ -73,7 +73,7 @@ public class DepthFirstSearchSolver implements Solver {
         }
         dq.push(current);
 
-        return new LinkedList<>(dq);
+        return new LinkedList<>(dq.reversed());
     }
 
     /**

@@ -37,6 +37,25 @@ public class RandomizedSet<E> {
     }
 
     /**
+     * Проверяет есть ли элемент во множестве
+     *
+     * @param e элемент для проверки наличия во множестве
+     * @return результат проверки (true, если элемент есть во множестве, иначе false)
+     */
+    public boolean contains(E e) {
+        return itemToIndex.containsKey(e);
+    }
+
+    /**
+     * Находит количество элементов во множестве
+     *
+     * @return количество элементов
+     */
+    public int size() {
+        return itemToIndex.size();
+    }
+
+    /**
      * Добавляет элемент во множество.
      *
      * @param e элемент для вставки во множество
